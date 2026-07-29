@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Răzuiește și câștigă</title>
+<meta name="description" content="Răzuiește cardul, găsește 3 simboluri identice și ia bonusul.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rubik:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+<main>
+
+  <!-- ============================ HERO ============================ -->
+  <section class="hero">
+    <div class="hero__bg" aria-hidden="true"></div>
+
+    <h1 class="hero__title" data-i18n="hero.title">RĂZUIEȘTE ȘI CÂȘTIGĂ</h1>
+
+    <div class="hero__stage">
+      <!-- Scratch card -->
+      <div class="card" id="card">
+        <div class="card__frame" aria-hidden="true"></div>
+
+        <div class="card__screen">
+          <!-- Prize grid: three 100 LEI coins = always a win -->
+          <div class="card__grid" id="grid">
+            <div class="cell"><span class="sym sym--ten"    role="img" aria-label="10"></span></div>
+            <div class="cell"><span class="sym sym--coin"   role="img" aria-label="100 LEI"></span></div>
+            <div class="cell"><span class="sym sym--book"   role="img" aria-label="Book"></span></div>
+            <div class="cell"><span class="sym sym--coin"   role="img" aria-label="100 LEI"></span></div>
+            <div class="cell"><span class="sym sym--pharaoh" role="img" aria-label="Pharaoh"></span></div>
+            <div class="cell"><span class="sym sym--coin"   role="img" aria-label="100 LEI"></span></div>
+          </div>
+
+          <div class="card__lines" aria-hidden="true">
+            <i class="line line--v line--v1"></i>
+            <i class="line line--v line--v2"></i>
+            <i class="line line--h"></i>
+          </div>
+
+          <canvas class="card__scratch" id="scratch"></canvas>
+        </div>
+      </div>
+
+      <p class="hero__hint" data-i18n="hero.hint">GĂSEȘTE 3 SIMBOLURI IDENTICE ȘI IA BONUSUL!</p>
+    </div>
+
+    <button type="button" class="auto" id="auto">
+      <span class="auto__icon" aria-hidden="true"></span>
+      <span data-i18n="hero.auto">RĂZUIEȘTE AUTOMAT</span>
+    </button>
+  </section>
+
+
+  <!-- ========================= OPERATORS ========================== -->
+  <section class="warn">
+    <h2 class="warn__title" data-i18n="warn.title">ATENȚIE LA OPERATORI ILEGALI DE PARIURI ȘI CASINO</h2>
+
+    <ul class="ops">
+      <li class="op"><div class="op__logo op__logo--1" aria-hidden="true"></div>
+        <h3 class="op__head"><span data-i18n="ops.0.lead">Promit premii mari,</span> <b data-i18n="ops.but">DAR</b></h3>
+        <p class="op__body" data-i18n="ops.0.body">Mii de clienți au fost înșelați și nu au primit banii câștigați.</p></li>
+
+      <li class="op"><div class="op__logo op__logo--2" aria-hidden="true"></div>
+        <h3 class="op__head"><span data-i18n="ops.1.lead">Promit retrageri rapide,</span> <b data-i18n="ops.but">DAR</b></h3>
+        <p class="op__body" data-i18n="ops.1.body">Nu răspund atunci când vrei să-ți retragi banii.</p></li>
+
+      <li class="op"><div class="op__logo op__logo--3" aria-hidden="true"></div>
+        <h3 class="op__head"><span data-i18n="ops.2.lead">Promit încredere,</span> <b data-i18n="ops.but">DAR</b></h3>
+        <p class="op__body" data-i18n="ops.2.body">Nu poți da de ei atunci când nu ceva nu merge.</p></li>
+
+      <li class="op"><div class="op__logo op__logo--4" aria-hidden="true"></div>
+        <h3 class="op__head"><span data-i18n="ops.3.lead">Promit bonusuri mari,</span> <b data-i18n="ops.but">DAR</b></h3>
+        <p class="op__body" data-i18n="ops.3.body">Mii de jucători nu au primit nimic.</p></li>
+
+      <li class="op"><div class="op__logo op__logo--5" aria-hidden="true"></div>
+        <h3 class="op__head"><span data-i18n="ops.4.lead">Joci la ei,</span> <b data-i18n="ops.but">DAR</b></h3>
+        <p class="op__body" data-i18n="ops.4.body">Când trebuie să-ți retragi banii, dispar.</p></li>
+
+      <li class="op"><div class="op__logo op__logo--6" aria-hidden="true"></div>
+        <h3 class="op__head"><span data-i18n="ops.5.lead">Zic că plătesc,</span> <b data-i18n="ops.but">DAR</b></h3>
+        <p class="op__body" data-i18n="ops.5.body">Mii de clienți nu au primit banii câștigați!</p></li>
+    </ul>
+  </section>
+
+
+  <!-- =========================== TRUST ============================ -->
+  <section class="trust">
+    <div class="trust__item"><span class="trust__icon trust__icon--fast" aria-hidden="true"></span>
+      <p data-i18n="trust.0">Plați Instante</p></div>
+    <div class="trust__item"><span class="trust__icon trust__icon--star" aria-hidden="true"></span>
+      <p data-i18n="trust.1">Experiență de 5 stele</p></div>
+    <div class="trust__item"><span class="trust__icon trust__icon--only" aria-hidden="true"></span>
+      <p data-i18n="trust.2">Unica platformă online de jocuri slot din Moldova</p></div>
+  </section>
+
+
+  <!-- ========================== PAYMENTS ========================== -->
+  <footer class="pay">
+    <span class="pay__mark pay__mark--mc"   role="img" aria-label="Mastercard"></span>
+    <span class="pay__mark pay__mark--paynet" role="img" aria-label="Paynet"></span>
+    <span class="pay__mark pay__mark--mia"  role="img" aria-label="MIA"></span>
+  </footer>
+
+</main>
+
+
+<!-- ============================ WIN MODAL ============================ -->
+<div class="modal" id="modal" hidden>
+  <div class="modal__overlay" data-close></div>
+
+  <div class="modal__card" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
+    <button type="button" class="modal__x" id="modal-x" data-close aria-label="Close">&times;</button>
+
+    <h2 class="modal__heading" id="modal-heading" data-i18n="popup.heading">Felicitări! Ai câștigat</h2>
+
+    <div class="modal__prize">
+      <strong class="modal__amount" data-i18n="popup.amount">100</strong>
+      <span class="modal__currency" data-i18n="popup.currency">Lei Gratis</span>
+    </div>
+
+    <p class="modal__timer">
+      <span data-i18n="popup.expires">Oferta expiră în:</span>
+      <span class="modal__clock">
+        <b id="cd-min">02</b><small data-i18n="popup.min">min</small>
+        <b id="cd-sec">36</b><small data-i18n="popup.sec">sec</small>
+      </span>
+    </p>
+
+    <a class="modal__cta" id="modal-cta" href="https://slot.md" target="_blank" rel="noopener"
+       data-i18n="popup.cta">Vreau Rotirile</a>
+  </div>
+</div>
+
+<script src="assets/js/locales.js"></script>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/scratch.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
