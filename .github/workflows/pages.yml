@@ -24,7 +24,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # enablement turns Pages on via the API the first time, so the repo needs
+      # no manual Settings → Pages step before the first deploy.
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       # The site is plain static files — publish the repo root as-is, no build.
       - uses: actions/upload-pages-artifact@v3
