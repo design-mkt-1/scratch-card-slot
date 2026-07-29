@@ -27,6 +27,14 @@
   /* card aspect, straight off the Figma frame (matches the 1713×1200 export) */
   --card-ratio:   856.41 / 600;
 
+  /* Mobile design unit. Every mobile metric below is a fraction of this rather
+     than a raw vw, so the whole composition scales as one piece. Mixing capped
+     font sizes with uncapped vw art is what let the headline collide with the
+     clover on wide phones: the artwork kept growing after the type stopped.
+     Capped at 430 (the widest phone) so the layout stops growing rather than
+     stretching on to the 768px desktop breakpoint. Reference width is 375. */
+  --u: min(100vw, 430px);
+
   --font-display: 'Rubik', 'Inter', system-ui, sans-serif;
   --font-body:    'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
@@ -58,17 +66,12 @@ ul { list-style: none; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* Mobile rhythm is taken straight from the Figma frame (375×646): title top at
-     73px, card top at 261px, auto row ending 73px off the bottom. The decorative
-     clover and "A" are positioned against those numbers, so the spacing has to
-     match or they land on top of the card instead of around it. */
-  padding: 19.47vw 16px 19.47vw;   /* 73px top and bottom at 375 */
+  /* Rhythm from the Figma mobile frame (375×646): title top 75, card top 261,
+     auto row ending 73px off the bottom. */
+  padding: calc(0.2 * var(--u)) 16px calc(0.1947 * var(--u));
   overflow: hidden;
   isolation: isolate;
-  /* The Figma mobile hero frame is 375×646 — 172.3vw. Holding that keeps the
-     clover and the "A" at their designed positions and stops `cover` cropping
-     the background art. Capped for wide phones and small tablets. */
-  min-height: min(172.3vw, 660px);
+  min-height: calc(1.7227 * var(--u));   /* 646 / 375 */
 }
 
 .hero__bg {
@@ -85,8 +88,13 @@ ul { list-style: none; }
   background-image:
     url('../img/clover.webp'),
     url('../img/hero-bg-mobile.webp');
-  background-size: 58.13% auto, cover;
-  background-position: left 22.4% top 20.9%, center top;
+  /* Sized and placed off --u, not the hero box: the hero is full-bleed but the
+     composition is capped, so a percentage here would keep growing past the cap
+     and push the clover up into the headline. Figma: (84, 135) at 218×218. */
+  background-size: calc(0.5813 * var(--u)) auto, cover;
+  background-position:
+    left calc((100vw - var(--u)) / 2 + 0.224 * var(--u)) top calc(0.36 * var(--u)),
+    center top;
   background-repeat: no-repeat, no-repeat;
 }
 
@@ -108,7 +116,9 @@ ul { list-style: none; }
   text-align: center;
   line-height: 1.32;         /* Figma: 45px lines on 34px type */
   letter-spacing: 0.005em;
-  font-size: clamp(1.75rem, 9.07vw, 2.75rem);
+  font-size: calc(0.09067 * var(--u));      /* 34px at 375 */
+  /* Figma's headline box is 335 wide, which is what forces the two-line wrap. */
+  max-width: calc(0.8933 * var(--u));
 
   background: linear-gradient(180deg, var(--green-1), var(--green-2));
   -webkit-background-clip: text;
@@ -121,11 +131,11 @@ ul { list-style: none; }
   filter:
     drop-shadow(0 0.032em 0 var(--gold-shadow))
     drop-shadow(0 0.095em 0.095em rgba(0, 0, 0, 0.25));
-  margin-bottom: 26.13vw;    /* 98px at 375 — title ends 163, card top 261 */
+  margin-bottom: calc(0.2565 * var(--u));   /* title ends 165, card top 261 */
 }
 
 .hero__stage {
-  width: 100%;
+  width: calc(0.912 * var(--u));            /* 342px at 375 */
   max-width: 856px;
   display: flex;
   flex-direction: column;
@@ -179,27 +189,27 @@ ul { list-style: none; }
   width: min(740px, 92%);
   /* Its top edge sits above the card's bottom edge so the card lip overlaps it —
      10px on mobile, 21px on desktop (where the bar is 740×97 at 48/32/16). */
-  margin-top: -2.67vw;
+  margin-top: calc(-0.0267 * var(--u));
   padding: 1.765em 1.176em 0.588em;
   background: rgba(0, 0, 0, 0.8);
   border-radius: 0 0 clamp(12px, 1.7vw, 32px) clamp(12px, 1.7vw, 32px);
   color: var(--yellow);
   text-align: center;
-  font-size: clamp(0.7rem, 3.2vw, 1.7rem);   /* 12px at 375, per the mobile frame */
+  font-size: calc(0.032 * var(--u));         /* 12px at 375, per the mobile frame */
   line-height: 1.25;
 }
 
 .auto {
   display: inline-flex;
   align-items: center;
-  gap: 1.6vw;                /* 6px at 375 */
-  margin-top: 5.33vw;        /* 20px at 375; Figma's 25px gap less this row's own padding */
-  padding: 0.25em 0.6em;     /* kept for a tappable target — Figma's row is a bare 18px */
+  gap: calc(0.016 * var(--u));          /* 6px at 375 */
+  margin-top: calc(0.0533 * var(--u));  /* Figma's 25px gap less this row's own padding */
+  padding: 0.25em 0.6em;                /* kept tappable — Figma's row is a bare 18px */
   background: none;
   border: 0;
   color: #fff;
   font-family: inherit;
-  font-size: clamp(0.8rem, 3.73vw, 1.125rem);   /* 14px at 375 */
+  font-size: calc(0.0373 * var(--u));   /* 14px at 375 */
   font-weight: 500;
   text-transform: uppercase;
   cursor: pointer;
@@ -210,7 +220,7 @@ ul { list-style: none; }
 /* Inlined rather than a file: this is the one icon that wasn't in the export set,
    and two arcs cost less as a data URI than a network request would. */
 .auto__icon {
-  width: clamp(16px, 4.8vw, 24px);   /* 18px at 375 */
+  width: calc(0.048 * var(--u));      /* 18px at 375 */
   aspect-ratio: 1;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.4 13.2a8.5 8.5 0 0 1-14.2 5'/%3E%3Cpath d='M3.6 10.8a8.5 8.5 0 0 1 14.2-5'/%3E%3Cpath d='M2.4 15.1l3.8 3.1 1.6-4'/%3E%3Cpath d='M21.6 8.9l-3.8-3.1-1.6 4'/%3E%3C/svg%3E") center / contain no-repeat;
 }
@@ -231,13 +241,13 @@ ul { list-style: none; }
   text-align: center;
   text-transform: uppercase;
   font-weight: 700;
-  font-size: clamp(1.15rem, 5.33vw, 2rem);   /* 20px at 375 */
+  font-size: calc(0.0533 * var(--u));        /* 20px at 375 */
   line-height: 1.22;
 }
 
 .ops {
   display: grid;
-  gap: clamp(12px, 1.4vw, 26px);
+  gap: calc(0.0347 * var(--u));   /* 13px at 375 */
   grid-template-columns: repeat(2, 1fr);
   max-width: 1180px;
   margin: 0 auto;
@@ -260,7 +270,7 @@ ul { list-style: none; }
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  margin-bottom: 4vw;   /* 15px at 375 */
+  margin-bottom: calc(0.04 * var(--u));   /* 15px at 375 */
 }
 
 .op__logo--1 { background-image: url('../img/op-mob-1.webp'); }
@@ -271,7 +281,7 @@ ul { list-style: none; }
 .op__logo--6 { background-image: url('../img/op-mob-6.webp'); }
 
 .op__head {
-  font-size: clamp(0.9rem, 4vw, 1.05rem);      /* 15px at 375 */
+  font-size: calc(0.04 * var(--u));            /* 15px at 375 */
   font-weight: 600;
   line-height: 1.3;
   margin-bottom: 0.45em;
@@ -280,7 +290,7 @@ ul { list-style: none; }
 
 .op__body {
   color: var(--op-body);
-  font-size: clamp(0.78rem, 3.47vw, 0.9rem);   /* 13px at 375 */
+  font-size: calc(0.0347 * var(--u));          /* 13px at 375 */
   line-height: 1.35;
 }
 
@@ -427,19 +437,23 @@ ul { list-style: none; }
      without it the clover and the pharaoh sit noticeably larger than designed.
      Top padding is the comp's 144px expressed as 7.5vw. */
   .hero        { min-height: min(56.25vw, 1080px); padding: 7.5vw 24px 2vw; }
+  /* --u is capped at 430, so every metric derived from it must be re-stated here
+     or the desktop layout inherits phone-sized values. */
   .hero__title {
     font-size: clamp(2.4rem, 5.2vw, 6.25rem);
     line-height: 1;              /* single line at this width */
     margin-bottom: 0.35em;
+    max-width: none;
   }
+  .hero__stage { width: 100%; }
   .hero__hint  { font-size: clamp(0.9rem, 1.42vw, 1.7rem); margin-top: -0.772em; }
   .auto        { font-size: clamp(0.8rem, 0.94vw, 1.125rem); margin-top: clamp(12px, 2vw, 28px); }
   .auto__icon  { width: clamp(18px, 1.25vw, 24px); }
 
   .warn__title { font-size: clamp(1.3rem, 1.85vw, 2rem); }
-  .ops         { grid-template-columns: repeat(3, 1fr); }
+  .ops         { grid-template-columns: repeat(3, 1fr); gap: clamp(12px, 1.4vw, 26px); }
 
-  .op__logo    { aspect-ratio: 645 / 300; }
+  .op__logo    { aspect-ratio: 645 / 300; margin-bottom: clamp(8px, 0.8vw, 14px); }
   .op__logo--1 { background-image: url('../img/op-1.webp'); }
   .op__logo--2 { background-image: url('../img/op-2.webp'); }
   .op__logo--3 { background-image: url('../img/op-3.webp'); }
