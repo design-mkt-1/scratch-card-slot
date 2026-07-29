@@ -28,8 +28,16 @@ assets/js/*.js
 assets/img/*
 ```
 
-GitHub Pages is wired up in `.github/workflows/pages.yml` and publishes the repository
-root on every push to the default branch.
+### GitHub Pages preview
+
+`.github/workflows/pages.yml` publishes the repository root on every push to `main`.
+
+**One-time setup:** go to **Settings → Pages** and set **Source** to **GitHub Actions**.
+This cannot be automated — creating a Pages site needs admin rights that the workflow's
+`GITHUB_TOKEN` does not have, so the first run fails with
+`Get Pages site failed` until it is switched on. After that, re-run the workflow
+(Actions → Deploy to GitHub Pages → Run workflow) and the site goes live at
+`https://design-mkt-1.github.io/scratch-card-slot/`.
 
 ## Languages
 

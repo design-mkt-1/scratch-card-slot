@@ -24,11 +24,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # enablement turns Pages on via the API the first time, so the repo needs
-      # no manual Settings → Pages step before the first deploy.
+      # Requires Pages to be enabled once by hand: Settings → Pages → Source:
+      # "GitHub Actions". enablement:true cannot do it for us — creating a Pages
+      # site needs admin rights that GITHUB_TOKEN does not carry.
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       # The site is plain static files — publish the repo root as-is, no build.
       - uses: actions/upload-pages-artifact@v3
