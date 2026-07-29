@@ -59,6 +59,13 @@
     this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     this._paintCover(rect.width, rect.height);
 
+    /* The cover art is a rounded card on a transparent background, so a chunk of
+       the canvas is already clear before anyone touches it. Record that baseline
+       once, and measure progress only against the pixels that started opaque —
+       otherwise the corners alone would count as ~10% scratched. */
+    var m = this._measure();
+    this._baseClear = m ? m.clear : 0;
+
     this.done = false;
     this.canvas.style.opacity = '1';
     this.canvas.style.pointerEvents = '';
@@ -169,21 +176,20 @@
     }
   };
 
-  /** Fraction of the cover already erased, sampled on a coarse grid. */
-  ScratchCard.prototype.progress = function () {
+  /** Count transparent vs sampled pixels on a coarse grid. */
+  ScratchCard.prototype._measure = function () {
     var cw = this.canvas.width, ch = this.canvas.height;
-    if (!cw || !ch) return 0;
+    if (!cw || !ch) return null;
 
     var data;
     try {
       data = this.ctx.getImageData(0, 0, cw, ch).data;
     } catch (e) {
-      return 0;   // tainted canvas (cover image from another origin) — never block on this
+      return null;   // tainted canvas (cover served cross-origin) — never block on this
     }
 
     var clear = 0, total = 0;
     var stride = 4 * SAMPLE_STEP;
-    var rowStep = 4 * cw * SAMPLE_STEP;
 
     for (var row = 0; row < ch; row += SAMPLE_STEP) {
       var base = row * cw * 4;
@@ -192,7 +198,19 @@
         total++;
       }
     }
-    return total ? clear / total : 0;
+    return { clear: clear, total: total };
+  };
+
+  /** Fraction of the *scratchable* area erased, ignoring pixels that the cover
+      art left transparent to begin with. */
+  ScratchCard.prototype.progress = function () {
+    var m = this._measure();
+    if (!m) return 0;
+
+    var scratchable = m.total - this._baseClear;
+    if (scratchable <= 0) return 0;
+
+    return Math.max(0, (m.clear - this._baseClear) / scratchable);
   };
 
   /* -------------------------------------------------------------- finish */

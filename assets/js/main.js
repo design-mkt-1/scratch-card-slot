@@ -90,10 +90,26 @@
 
   /* ------------------------------------------------------- scratch card */
 
+  /* Match the cover art to the card art the stylesheet is showing at this width,
+     so the gold panel lines up with the frame underneath it exactly. */
+  var wide = w.matchMedia('(min-width: 768px)');
+  function coverFor(mq) {
+    return mq.matches ? 'assets/img/card-cover.webp' : 'assets/img/card-cover-mobile.webp';
+  }
+
   card = new w.ScratchCard(canvas, {
-    coverSrc: 'assets/img/card-cover.png',   // optional; painted stand-in used if absent
+    coverSrc: coverFor(wide),
     onComplete: openModal
   });
+
+  /* Crossing the breakpoint swaps which export the CSS paints, so swap the cover too. */
+  var onBreakpoint = function () {
+    if (card.done) return;
+    card.coverSrc = coverFor(wide);
+    card._loadCover();
+  };
+  if (wide.addEventListener) wide.addEventListener('change', onBreakpoint);
+  else if (wide.addListener) wide.addListener(onBreakpoint);   // Safari < 14
 
   autoBtn.addEventListener('click', function () { card.auto(); });
 
