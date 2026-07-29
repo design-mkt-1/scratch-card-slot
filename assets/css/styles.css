@@ -229,22 +229,24 @@ ul { list-style: none; }
   flex-direction: column;
 }
 
+/* Each logo carries its own brand background and rounded corners, so no
+   background-color here — it would fill the transparent corners.
+   The two exports are cut at different ratios: 300×122 for mobile,
+   645×300 for desktop, so the aspect follows the breakpoint. */
 .op__logo {
-  aspect-ratio: 16 / 9;
-  border-radius: clamp(5px, 0.5vw, 10px);
-  background-color: #17110c;
-  background-size: cover;
+  aspect-ratio: 300 / 122;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   margin-bottom: clamp(8px, 0.8vw, 14px);
 }
 
-.op__logo--1 { background-image: url('../img/op-1.png'); background-color: #f5124e; }
-.op__logo--2 { background-image: url('../img/op-2.png'); background-color: #0d0d0f; }
-.op__logo--3 { background-image: url('../img/op-3.png'); background-color: #1a2440; }
-.op__logo--4 { background-image: url('../img/op-4.png'); background-color: #1c1160; }
-.op__logo--5 { background-image: url('../img/op-5.png'); background-color: #0a0406; }
-.op__logo--6 { background-image: url('../img/op-6.png'); background-color: #fbfbfb; }
+.op__logo--1 { background-image: url('../img/op-mob-1.webp'); }
+.op__logo--2 { background-image: url('../img/op-mob-2.webp'); }
+.op__logo--3 { background-image: url('../img/op-mob-3.webp'); }
+.op__logo--4 { background-image: url('../img/op-mob-4.webp'); }
+.op__logo--5 { background-image: url('../img/op-mob-5.webp'); }
+.op__logo--6 { background-image: url('../img/op-mob-6.webp'); }
 
 .op__head {
   font-size: clamp(0.8rem, 3.4vw, 1.05rem);
@@ -459,6 +461,15 @@ ul { list-style: none; }
 
   .warn__title { font-size: clamp(1.3rem, 1.85vw, 2rem); }
   .ops         { grid-template-columns: repeat(3, 1fr); }
+
+  .op__logo    { aspect-ratio: 645 / 300; }
+  .op__logo--1 { background-image: url('../img/op-1.webp'); }
+  .op__logo--2 { background-image: url('../img/op-2.webp'); }
+  .op__logo--3 { background-image: url('../img/op-3.webp'); }
+  .op__logo--4 { background-image: url('../img/op-4.webp'); }
+  .op__logo--5 { background-image: url('../img/op-5.webp'); }
+  .op__logo--6 { background-image: url('../img/op-6.webp'); }
+
   .op__head    { font-size: clamp(0.9rem, 1vw, 1.05rem); }
   .op__body    { font-size: clamp(0.75rem, 0.83vw, 0.9rem); }
 

@@ -67,26 +67,45 @@ design. There is no prize logic and no backend call.
 
 ## Assets
 
-The stylesheet references the files below. Every one has a CSS gradient or solid-colour
-fallback behind it, so the page renders correctly even while they are missing — drop the
-real exports in at these exact paths and they take over with no code changes.
+All artwork is exported from Figma and converted to WebP. Sources are PNG at 2×;
+the originals stay in git history rather than the working tree, so GitHub Pages does not
+deploy ~18 MB of unused files.
+
+Anything sized per breakpoint exists twice — phones load only the small export, desktops
+only the large one. They are never stacked as CSS fallback layers, which would make every
+phone download both.
 
 | Path | What it is |
 | --- | --- |
-| `assets/img/hero-bg.webp` | Hero background artwork (export the composed `BG` node, 1920×1080) |
-| `assets/img/card-frame.png` | Gold card frame, transparent centre |
-| `assets/img/card-cover.png` | Gold "?" scratch cover painted onto the canvas |
-| `assets/img/sym-10.png` | `10` symbol |
-| `assets/img/sym-coin.png` | `100 LEI` coin |
-| `assets/img/sym-book.png` | Book symbol |
-| `assets/img/sym-pharaoh.png` | Pharaoh symbol |
-| `assets/img/op-1.png` … `op-6.png` | Operator logos, in the order they appear |
-| `assets/img/icon-refresh.svg` | Auto-scratch icon |
-| `assets/img/icon-fast.svg`, `icon-star.svg`, `icon-only.svg` | Trust bar icons |
-| `assets/img/pay-mastercard.svg`, `pay-paynet.svg`, `pay-mia.svg` | Payment marks |
+| `hero-bg.webp` / `hero-bg-mobile.webp` | Hero background, 2560×1440 and 750×1456 |
+| `card-base.webp` / `card-base-mobile.webp` | Revealed card — frame, cream face, grid lines and the three `100 LEI` symbols, all one image |
+| `card-cover.webp` / `card-cover-mobile.webp` | The gold "?" panel the canvas paints and the pointer erases |
+| `card-empty.webp` | Frame with an empty face. Unused — kept as a spare |
+| `op-1.webp` … `op-6.webp` | Operator logos, desktop (645×300) |
+| `op-mob-1.webp` … `op-mob-6.webp` | Operator logos, mobile (300×122) |
+| `icon-fast.svg`, `icon-star.svg`, `icon-only.svg` | Trust bar icons — each draws its own teal ring |
+| `pay-mastercard.svg`, `pay-paynet.svg`, `pay-mia.svg` | Payment marks |
+| `sym-*.webp` | Individual prize symbols. Unused — the card art already contains them; kept in case the grid ever needs to be built from parts |
 
-If `card-cover.png` is absent the canvas paints a gold gradient with six `?` glyphs
-instead, which is close to the designed cover.
+The auto-scratch refresh icon is inlined as a data URI in `styles.css`, since it was not
+in the export set.
+
+**Cover and base must stay aligned.** Both include the same frame, so erasing the cover
+over the frame reveals an identical frame underneath and the seam is invisible. If either
+is re-exported, re-export both at the same crop.
+
+### Still to come
+
+The gold "A" flourish that sits over the hero is its own Figma layer and is not part of
+the background export, so it is currently missing on both breakpoints. The mobile
+background also excludes the clover, which the desktop one bakes in. Drop those in and
+tell me and I will layer them over `.hero__bg`.
+
+### Re-converting
+
+Conversion used Pillow — `quality=90–92` with `alpha_quality=100` for anything with
+transparency, `quality=86` for the opaque backgrounds. This is a one-off authoring step,
+not a build step: the site itself has no toolchain.
 
 ## Fonts
 
