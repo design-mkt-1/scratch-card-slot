@@ -77,14 +77,28 @@ ul { list-style: none; }
   inset: 0;
   z-index: -1;
   background-color: #1a0d04;
+  /* Layers fall through: if the mobile art is missing the desktop art shows; if that
+     is missing too, the gradients do. Each layer only paints if its file resolves. */
   background-image:
+    url('../img/hero-bg-mobile.webp'),
     url('../img/hero-bg.webp'),
     radial-gradient(ellipse 60% 55% at 72% 28%, rgba(255, 138, 20, 0.45), transparent 70%),
     radial-gradient(ellipse 55% 60% at 22% 62%, rgba(120, 30, 8, 0.55), transparent 72%),
     linear-gradient(180deg, #2b1206 0%, #1a0d04 62%, #150a03 100%);
-  background-size: cover, auto, auto, auto;
+  background-size: cover, cover, auto, auto, auto;
   background-position: center top;
   background-repeat: no-repeat;
+}
+
+@media (min-width: 768px) {
+  .hero__bg {
+    background-image:
+      url('../img/hero-bg.webp'),
+      radial-gradient(ellipse 60% 55% at 72% 28%, rgba(255, 138, 20, 0.45), transparent 70%),
+      radial-gradient(ellipse 55% 60% at 22% 62%, rgba(120, 30, 8, 0.55), transparent 72%),
+      linear-gradient(180deg, #2b1206 0%, #1a0d04 62%, #150a03 100%);
+    background-size: cover, auto, auto, auto;
+  }
 }
 
 /* the hero fades into the warning section */
