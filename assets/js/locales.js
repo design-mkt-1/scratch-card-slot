@@ -6,7 +6,8 @@ window.LOCALES = {
     'html.lang'  : 'ro',
     'html.title' : 'Răzuiește și câștigă',
 
-    'hero.title' : 'RĂZUIEȘTE ȘI CÂȘTIGĂ',
+    'hero.title1': 'RĂZUIEȘTE ȘI',
+    'hero.title2': 'CÂȘTIGĂ',
     'hero.hint'  : 'GĂSEȘTE 3 SIMBOLURI IDENTICE ȘI IA BONUSUL!',
     'hero.auto'  : 'RĂZUIEȘTE AUTOMAT',
 
@@ -39,7 +40,8 @@ window.LOCALES = {
     'html.lang'  : 'ru',
     'html.title' : 'Стирай и выигрывай',
 
-    'hero.title' : 'СТИРАЙ И ВЫИГРЫВАЙ',
+    'hero.title1': 'СТИРАЙ И',
+    'hero.title2': 'ВЫИГРЫВАЙ',
     'hero.hint'  : 'НАЙДИ 3 ОДИНАКОВЫХ СИМВОЛА И ПОЛУЧИ БОНУС!',
     'hero.auto'  : 'СТИРАТЬ АВТОМАТИЧЕСКИ',
 

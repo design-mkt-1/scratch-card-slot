@@ -22,7 +22,14 @@
   <section class="hero">
     <div class="hero__bg" aria-hidden="true"></div>
 
-    <h1 class="hero__title" data-i18n="hero.title">RĂZUIEȘTE ȘI CÂȘTIGĂ</h1>
+    <!-- Two separate lines, each carrying its own gradient — as in Figma, where the
+         headline is two text nodes. A single element spanning two lines would stretch
+         one gradient across both, leaving the second line entirely in the dark half.
+         They sit inline on desktop, where the headline is one line. -->
+    <h1 class="hero__title">
+      <span class="hero__title-line" data-i18n="hero.title1">RĂZUIEȘTE ȘI</span>
+      <span class="hero__title-line" data-i18n="hero.title2">CÂȘTIGĂ</span>
+    </h1>
 
     <div class="hero__stage">
       <!-- Scratch card. The frame, the cream face and the three 100 LEI symbols are

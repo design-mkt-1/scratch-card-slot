@@ -68,7 +68,9 @@ ul { list-style: none; }
   align-items: center;
   /* Rhythm from the Figma mobile frame (375×646): title top 75, card top 261,
      auto row ending 73px off the bottom. */
-  padding: calc(0.2 * var(--u)) 16px calc(0.1947 * var(--u));
+  /* Top headroom trimmed from Figma's 75px at the client's request — the comp
+     leaves more empty space above the headline than reads well on a real phone. */
+  padding: calc(0.13 * var(--u)) 16px calc(0.1947 * var(--u));
   overflow: hidden;
   isolation: isolate;
   min-height: calc(1.7227 * var(--u));   /* 646 / 375 */
@@ -93,7 +95,7 @@ ul { list-style: none; }
      and push the clover up into the headline. Figma: (84, 135) at 218×218. */
   background-size: calc(0.5813 * var(--u)) auto, cover;
   background-position:
-    left calc((100vw - var(--u)) / 2 + 0.224 * var(--u)) top calc(0.36 * var(--u)),
+    left calc((100vw - var(--u)) / 2 + 0.224 * var(--u)) top calc(0.34 * var(--u)),
     center top;
   background-repeat: no-repeat, no-repeat;
 }
@@ -114,24 +116,33 @@ ul { list-style: none; }
   font-weight: 600;
   text-transform: uppercase;
   text-align: center;
-  line-height: 1.32;         /* Figma: 45px lines on 34px type */
+  line-height: 1.2;
   letter-spacing: 0.005em;
-  font-size: calc(0.09067 * var(--u));      /* 34px at 375 */
-  /* Figma's headline box is 335 wide, which is what forces the two-line wrap. */
-  max-width: calc(0.8933 * var(--u));
+  font-size: calc(0.104 * var(--u));        /* 39px at 375 */
+  max-width: calc(0.94 * var(--u));
 
+  /* Gold lip + drop shadow from the comp, scaled off the font size. On the parent
+     so it applies to both lines at once.
+     These must be filters, not text-shadow: with background-clip:text the
+     background paints *below* the text layer, so an opaque text-shadow would
+     cover the gradient and invert the effect. */
+  filter:
+    drop-shadow(0 0.032em 0 var(--gold-shadow))
+    drop-shadow(0 0.095em 0.095em rgba(0, 0, 0, 0.25));
+  margin-bottom: calc(0.2565 * var(--u));
+}
+
+/* The gradient lives here, per line, so each row runs the full bright-to-dark
+   ramp instead of sharing one ramp stretched over both. */
+.hero__title-line {
+  display: block;
   background: linear-gradient(180deg, var(--green-1), var(--green-2));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  /* Gold lip + drop shadow from the comp, scaled off the font size.
-     These must be filters, not text-shadow: with background-clip:text the
-     element's background paints *below* the text layer, so an opaque
-     text-shadow would cover the gradient and invert the effect. */
-  filter:
-    drop-shadow(0 0.032em 0 var(--gold-shadow))
-    drop-shadow(0 0.095em 0.095em rgba(0, 0, 0, 0.25));
-  margin-bottom: calc(0.2565 * var(--u));   /* title ends 165, card top 261 */
+}
+.hero__title-line + .hero__title-line {
+  margin-top: calc(0.027 * var(--u));       /* 10px at 375 */
 }
 
 .hero__stage {
@@ -436,15 +447,24 @@ ul { list-style: none; }
      that box. Holding 16:9 keeps `cover` from cropping and zooming the artwork —
      without it the clover and the pharaoh sit noticeably larger than designed.
      Top padding is the comp's 144px expressed as 7.5vw. */
-  .hero        { min-height: min(56.25vw, 1080px); padding: 7.5vw 24px 2vw; }
+  /* Headroom halved from the comp's 144px at the client's request. min-height comes
+     down by the same amount so the space is removed, not pushed to the section's
+     bottom — `cover` crops the background art slightly rather than letterboxing. */
+  .hero        { min-height: min(52.5vw, 1008px); padding: 3.5vw 24px 2vw; }
   /* --u is capped at 430, so every metric derived from it must be re-stated here
      or the desktop layout inherits phone-sized values. */
   .hero__title {
-    font-size: clamp(2.4rem, 5.2vw, 6.25rem);
+    font-size: clamp(2.6rem, 5.9vw, 7.25rem);   /* 113px at 1920, up from 100 */
     line-height: 1;              /* single line at this width */
     margin-bottom: 0.35em;
     max-width: none;
   }
+  /* One line here, so the two rows run back inline with a space between them.
+     Each keeps its own gradient, which on a single line is indistinguishable
+     from one gradient across the whole headline. */
+  .hero__title-line { display: inline; }
+  .hero__title-line + .hero__title-line { margin-top: 0; }
+
   .hero__stage { width: 100%; }
   .hero__hint  { font-size: clamp(0.9rem, 1.42vw, 1.7rem); margin-top: -0.772em; }
   .auto        { font-size: clamp(0.8rem, 0.94vw, 1.125rem); margin-top: clamp(12px, 2vw, 28px); }
