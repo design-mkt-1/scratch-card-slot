@@ -33,6 +33,10 @@
            prize through the "auto scratch" button below, which runs the same flow. -->
       <div class="card">
         <canvas class="card__scratch" id="scratch" aria-hidden="true"></canvas>
+        <!-- Sits over the card in the comp, so it comes after the canvas.
+             Anchored to the card box, not the hero, because the card's rendered
+             size matches the Figma frame on both breakpoints. -->
+        <img class="deco-a" src="assets/img/symbol-a.webp" alt="" aria-hidden="true">
       </div>
 
       <p class="hero__hint" data-i18n="hero.hint">GĂSEȘTE 3 SIMBOLURI IDENTICE ȘI IA BONUSUL!</p>

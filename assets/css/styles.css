@@ -60,14 +60,17 @@ ul { list-style: none; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 4.2vw 16px 3vw;
+  /* Mobile rhythm is taken straight from the Figma frame (375×646): title top at
+     73px, card top at 261px, auto row ending 73px off the bottom. The decorative
+     clover and "A" are positioned against those numbers, so the spacing has to
+     match or they land on top of the card instead of around it. */
+  padding: 19.47vw 16px 19.47vw;   /* 73px top and bottom at 375 */
   overflow: hidden;
   isolation: isolate;
-  /* Reserve a band of background below the card, as the comp does — the content
-     alone is only ~410px at 375 wide, which would crop the mobile art to about
-     half its height. Not the art's full 194vw ratio though: that leaves a dead
-     band nearly as tall as the card. Capped for wide phones and small tablets. */
-  min-height: min(165vw, 630px);
+  /* The Figma mobile hero frame is 375×646 — 172.3vw. Holding that keeps the
+     clover and the "A" at their designed positions and stops `cover` cropping
+     the background art. Capped for wide phones and small tablets. */
+  min-height: min(172.3vw, 660px);
 }
 
 .hero__bg {
@@ -75,12 +78,18 @@ ul { list-style: none; }
   inset: 0;
   z-index: -1;
   /* Phones load only the 750px background, desktops only the 2560px one — the two
-     are never stacked as fallback layers, or every phone would fetch both. */
+     are never stacked as fallback layers, or every phone would fetch both.
+     The clover is a separate Figma layer that the mobile background export omits
+     (the desktop one bakes it in), so it rides along as a second layer here rather
+     than as an element — it sits behind everything, which is what a backdrop is.
+     Figma mobile hero is 375×646 with the clover at (84, 135) 218×218. */
   background-color: #1a0d04;
-  background-image: url('../img/hero-bg-mobile.webp');
-  background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
+  background-image:
+    url('../img/clover.webp'),
+    url('../img/hero-bg-mobile.webp');
+  background-size: 58.13% auto, cover;
+  background-position: left 22.4% top 20.9%, center top;
+  background-repeat: no-repeat, no-repeat;
 }
 
 /* the hero fades into the warning section */
@@ -99,7 +108,7 @@ ul { list-style: none; }
   font-weight: 600;
   text-transform: uppercase;
   text-align: center;
-  line-height: 1;
+  line-height: 1.5;          /* two lines = 102px at 375, matching the comp */
   letter-spacing: 0.005em;
   font-size: clamp(1.75rem, 9.07vw, 2.75rem);
 
@@ -114,7 +123,7 @@ ul { list-style: none; }
   filter:
     drop-shadow(0 0.032em 0 var(--gold-shadow))
     drop-shadow(0 0.095em 0.095em rgba(0, 0, 0, 0.25));
-  margin-bottom: 0.35em;
+  margin-bottom: 22.93vw;    /* 86px at 375 — puts the card top at 261px */
 }
 
 .hero__stage {
@@ -141,6 +150,20 @@ ul { list-style: none; }
   filter: drop-shadow(0 1.2em 2.2em rgba(0, 0, 0, 0.55));
 }
 
+/* Gold "A" flourish. Its own Figma layer, drawn above the card and the hint bar.
+   The export is the rotated symbol's bounding box (558×540 ≈ the 1.034 ratio of the
+   Figma box), so the 14.73° tilt is already baked in — do not rotate it again here.
+   Percentages resolve against the card, which renders at the Figma frame's size.
+   Mobile: Figma puts it at (288.1, 509) 146.6 wide, card at (17, 261) 342×238. */
+.deco-a {
+  position: absolute;
+  left: 79.3%;
+  top: 104.2%;
+  width: 42.85%;
+  height: auto;
+  pointer-events: none;
+}
+
 .card__scratch {
   position: absolute;
   inset: 0;
@@ -156,10 +179,9 @@ ul { list-style: none; }
 
 .hero__hint {
   width: min(740px, 92%);
-  /* Figma: bar is 740×97, padding 48/32/16, and its top edge sits 21px *above*
-     the card's bottom edge so the card lip overlaps it. Expressed in em of the
-     bar's own 27.2px type so it holds at every viewport. */
-  margin-top: -0.772em;
+  /* Its top edge sits above the card's bottom edge so the card lip overlaps it —
+     10px on mobile, 21px on desktop (where the bar is 740×97 at 48/32/16). */
+  margin-top: -2.67vw;
   padding: 1.765em 1.176em 0.588em;
   background: rgba(0, 0, 0, 0.8);
   border-radius: 0 0 clamp(12px, 1.7vw, 32px) clamp(12px, 1.7vw, 32px);
@@ -173,7 +195,7 @@ ul { list-style: none; }
   display: inline-flex;
   align-items: center;
   gap: clamp(8px, 0.94vw, 18px);
-  margin-top: clamp(12px, 2vw, 28px);
+  margin-top: 6.67vw;        /* 25px at 375 */
   padding: 0.4em 0.6em;
   background: none;
   border: 0;
@@ -446,17 +468,29 @@ ul { list-style: none; }
 
 /* From here up we follow the 1920 desktop comp's proportions. */
 @media (min-width: 768px) {
-  .hero__bg    { background-image: url('../img/hero-bg.webp'); }
+  /* No clover layer here — the desktop background export already contains it. */
+  .hero__bg    {
+    background-image: url('../img/hero-bg.webp');
+    background-size: cover;
+    background-position: center top;
+  }
   .card        { background-image: url('../img/card-base.webp'); }
+
+  /* Figma desktop: "A" box at (1292, 710) 278.8 wide, card at (524, 294) 856.4×600. */
+  .deco-a      { left: 89.68%; top: 69.33%; width: 32.56%; }
 
   /* The comp's hero is 1920×1080, and the background art is composed for exactly
      that box. Holding 16:9 keeps `cover` from cropping and zooming the artwork —
      without it the clover and the pharaoh sit noticeably larger than designed.
      Top padding is the comp's 144px expressed as 7.5vw. */
   .hero        { min-height: min(56.25vw, 1080px); padding: 7.5vw 24px 2vw; }
-  .hero__title { font-size: clamp(2.4rem, 5.2vw, 6.25rem); }
-  .hero__hint  { font-size: clamp(0.9rem, 1.42vw, 1.7rem); }
-  .auto        { font-size: clamp(0.8rem, 0.94vw, 1.125rem); }
+  .hero__title {
+    font-size: clamp(2.4rem, 5.2vw, 6.25rem);
+    line-height: 1;              /* single line at this width */
+    margin-bottom: 0.35em;
+  }
+  .hero__hint  { font-size: clamp(0.9rem, 1.42vw, 1.7rem); margin-top: -0.772em; }
+  .auto        { font-size: clamp(0.8rem, 0.94vw, 1.125rem); margin-top: clamp(12px, 2vw, 28px); }
   .auto__icon  { width: clamp(18px, 1.25vw, 24px); }
 
   .warn__title { font-size: clamp(1.3rem, 1.85vw, 2rem); }
