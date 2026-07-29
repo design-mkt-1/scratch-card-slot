@@ -5,7 +5,7 @@
   /* Operator registration URL. Swap this one line when the real link lands. */
   var CTA_URL = 'https://slot.md';
 
-  var COUNTDOWN_SECONDS = 2 * 60 + 36;   // "02 min 36 sec" per the Figma comp
+  var COUNTDOWN_SECONDS = 57 * 60 + 23;   // "57 min 23 sec"
 
   var canvas   = d.getElementById('scratch');
   var autoBtn  = d.getElementById('auto');

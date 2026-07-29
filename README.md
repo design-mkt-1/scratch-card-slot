@@ -59,7 +59,7 @@ design. `window.I18N.set('ru')` switches at runtime if you ever want to wire one
 | What | Where |
 | --- | --- |
 | CTA destination | `CTA_URL` at the top of `assets/js/main.js` (currently `https://slot.md`) |
-| Countdown length | `COUNTDOWN_SECONDS` in `assets/js/main.js` (currently 2 min 36 sec) |
+| Countdown length | `COUNTDOWN_SECONDS` in `assets/js/main.js` (currently 57 min 23 sec) |
 | Scratch threshold | `THRESHOLD` in `assets/js/scratch.js` (currently 0.55) |
 
 The card is **always a win** — the grid is fixed at three `100 LEI` symbols, matching the
