@@ -14,9 +14,6 @@
   --green-2:      #006900;
   --gold-shadow:  #fec018;
   --yellow:       #ffd900;
-  --card-face:    #dc8723;
-  --card-edge:    #c9070e;
-  --card-edge-2:  #3f1805;
 
   --warn-bg-top:  #3d1f0d;
   --warn-bg-bot:  #2a1408;
@@ -24,17 +21,13 @@
   --op-body:      #c2ab97;
 
   --trust-bg:     #4a4a4c;
-  --trust-accent: #6fbfae;
   --pay-bg:       #2f3033;
 
   --modal-bg:     #2b2b2b;
   --modal-cta:    #6fe3c0;
 
-  /* card geometry, straight off the Figma frame */
+  /* card aspect, straight off the Figma frame (matches the 1713×1200 export) */
   --card-ratio:   856.41 / 600;
-  --screen-inset-x: 2.594%;   /* 22.22 / 856.41 */
-  --screen-inset-y: 3.704%;   /* 22.22 / 600    */
-  --screen-radius:  9.474%;   /* 76.923 / 811.966 */
 
   --font-display: 'Rubik', 'Inter', system-ui, sans-serif;
   --font-body:    'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -70,35 +63,24 @@ ul { list-style: none; }
   padding: 4.2vw 16px 3vw;
   overflow: hidden;
   isolation: isolate;
+  /* Reserve a band of background below the card, as the comp does — the content
+     alone is only ~410px at 375 wide, which would crop the mobile art to about
+     half its height. Not the art's full 194vw ratio though: that leaves a dead
+     band nearly as tall as the card. Capped for wide phones and small tablets. */
+  min-height: min(165vw, 630px);
 }
 
 .hero__bg {
   position: absolute;
   inset: 0;
   z-index: -1;
+  /* Phones load only the 750px background, desktops only the 2560px one — the two
+     are never stacked as fallback layers, or every phone would fetch both. */
   background-color: #1a0d04;
-  /* Layers fall through: if the mobile art is missing the desktop art shows; if that
-     is missing too, the gradients do. Each layer only paints if its file resolves. */
-  background-image:
-    url('../img/hero-bg-mobile.webp'),
-    url('../img/hero-bg.webp'),
-    radial-gradient(ellipse 60% 55% at 72% 28%, rgba(255, 138, 20, 0.45), transparent 70%),
-    radial-gradient(ellipse 55% 60% at 22% 62%, rgba(120, 30, 8, 0.55), transparent 72%),
-    linear-gradient(180deg, #2b1206 0%, #1a0d04 62%, #150a03 100%);
-  background-size: cover, cover, auto, auto, auto;
+  background-image: url('../img/hero-bg-mobile.webp');
+  background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
-}
-
-@media (min-width: 768px) {
-  .hero__bg {
-    background-image:
-      url('../img/hero-bg.webp'),
-      radial-gradient(ellipse 60% 55% at 72% 28%, rgba(255, 138, 20, 0.45), transparent 70%),
-      radial-gradient(ellipse 55% 60% at 22% 62%, rgba(120, 30, 8, 0.55), transparent 72%),
-      linear-gradient(180deg, #2b1206 0%, #1a0d04 62%, #150a03 100%);
-    background-size: cover, auto, auto, auto;
-  }
 }
 
 /* the hero fades into the warning section */
@@ -146,112 +128,18 @@ ul { list-style: none; }
 
 /* ---------------------------- scratch card ---------------------------- */
 
+/* The revealed card — frame, cream face, grid lines and the three 100 LEI symbols
+   are all one exported image, so there is no DOM grid to keep in sync with the art.
+   Phones get the 684px export; 768px and up get the 1713px one. */
 .card {
   position: relative;
   width: 100%;
   aspect-ratio: var(--card-ratio);
+  background: url('../img/card-base-mobile.webp') center / 100% 100% no-repeat;
+  /* drop-shadow follows the frame's alpha, so the shadow traces the rounded
+     corners instead of boxing them the way box-shadow would */
+  filter: drop-shadow(0 1.2em 2.2em rgba(0, 0, 0, 0.55));
 }
-
-.card__frame {
-  position: absolute;
-  inset: 0;
-  border-radius: 11%/15%;
-  background-color: #b9822c;
-  background-image:
-    url('../img/card-frame.png'),
-    linear-gradient(155deg, #f6d488 0%, #c8912f 28%, #8d5a17 55%, #e2b661 78%, #a9741f 100%);
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  box-shadow: 0 1.4em 2.6em rgba(0, 0, 0, 0.55);
-}
-
-.card__screen {
-  position: absolute;
-  inset: var(--screen-inset-y) var(--screen-inset-x);
-  border-radius: var(--screen-radius) / calc(var(--screen-radius) * 1.427);
-  overflow: hidden;
-  background: var(--card-face);
-  border: 0.35% solid var(--card-edge-2);
-  box-shadow:
-    inset 0 0 2% 0 #000,
-    0 0 0 0.3% var(--card-edge);
-}
-
-/* prize grid sits under the canvas */
-.card__grid {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 88.72%;    /* 759.829 / 856.41 */
-  height: 84.62%;   /* 507.692 / 600    */
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  background:
-    linear-gradient(180deg, #fdf6df 0%, #f7ecc9 100%);
-}
-
-.cell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.sym {
-  display: block;
-  width: 66.67%;    /* 170.94 / 256.41 */
-  aspect-ratio: 1;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-}
-
-.sym--ten     { background-image: url('../img/sym-10.png'); }
-.sym--coin    { background-image: url('../img/sym-coin.png'); }
-.sym--book    { background-image: url('../img/sym-book.png'); }
-.sym--pharaoh { background-image: url('../img/sym-pharaoh.png'); }
-
-/* stand-ins so the grid reads correctly before the exports arrive */
-.sym--coin::after {
-  content: '100 LEI';
-  display: grid;
-  place-items: center;
-  width: 100%; height: 100%;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #f8dd8a, #d6a12c 62%, #a8761b);
-  color: #6a4a10;
-  font: 700 clamp(0.5rem, 2.2vw, 1.6rem)/1 var(--font-display);
-  text-align: center;
-  box-shadow: inset 0 -0.15em 0.3em rgba(0, 0, 0, 0.25);
-}
-.sym--ten::after, .sym--book::after, .sym--pharaoh::after {
-  content: '';
-  display: block;
-  width: 100%; height: 100%;
-  border-radius: 12%;
-  background: linear-gradient(160deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.16));
-}
-/* once a real export loads, hide the stand-in */
-.sym[style*='background-image']::after { display: none; }
-
-.card__lines {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 88.72%;
-  height: 84.62%;
-  pointer-events: none;
-}
-
-.line {
-  position: absolute;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0), #fff 40%, #fff 60%, rgba(255, 255, 255, 0));
-  filter: blur(1px);
-}
-.line--v { top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, rgba(255,255,255,0), #fff 40%, #fff 60%, rgba(255,255,255,0)); }
-.line--v1 { left: 33.33%; }
-.line--v2 { left: 66.66%; }
-.line--h  { left: 0; right: 0; top: 50%; height: 2px; }
 
 .card__scratch {
   position: absolute;
@@ -299,21 +187,12 @@ ul { list-style: none; }
 .auto:hover  { opacity: 0.85; }
 .auto:active { transform: translateY(1px); }
 
+/* Inlined rather than a file: this is the one icon that wasn't in the export set,
+   and two arcs cost less as a data URI than a network request would. */
 .auto__icon {
   width: clamp(14px, 3.4vw, 24px);
   aspect-ratio: 1;
-  background: url('../img/icon-refresh.svg') center / contain no-repeat;
-  /* fallback glyph so the control reads before the export lands */
-  position: relative;
-}
-.auto__icon::after {
-  content: '⟳';
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  font-size: 1.1em;
-  line-height: 1;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.4 13.2a8.5 8.5 0 0 1-14.2 5'/%3E%3Cpath d='M3.6 10.8a8.5 8.5 0 0 1 14.2-5'/%3E%3Cpath d='M2.4 15.1l3.8 3.1 1.6-4'/%3E%3Cpath d='M21.6 8.9l-3.8-3.1-1.6 4'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 
 
@@ -350,22 +229,24 @@ ul { list-style: none; }
   flex-direction: column;
 }
 
+/* Each logo carries its own brand background and rounded corners, so no
+   background-color here — it would fill the transparent corners.
+   The two exports are cut at different ratios: 300×122 for mobile,
+   645×300 for desktop, so the aspect follows the breakpoint. */
 .op__logo {
-  aspect-ratio: 16 / 9;
-  border-radius: clamp(5px, 0.5vw, 10px);
-  background-color: #17110c;
-  background-size: cover;
+  aspect-ratio: 300 / 122;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   margin-bottom: clamp(8px, 0.8vw, 14px);
 }
 
-.op__logo--1 { background-image: url('../img/op-1.png'); background-color: #f5124e; }
-.op__logo--2 { background-image: url('../img/op-2.png'); background-color: #0d0d0f; }
-.op__logo--3 { background-image: url('../img/op-3.png'); background-color: #1a2440; }
-.op__logo--4 { background-image: url('../img/op-4.png'); background-color: #1c1160; }
-.op__logo--5 { background-image: url('../img/op-5.png'); background-color: #0a0406; }
-.op__logo--6 { background-image: url('../img/op-6.png'); background-color: #fbfbfb; }
+.op__logo--1 { background-image: url('../img/op-mob-1.webp'); }
+.op__logo--2 { background-image: url('../img/op-mob-2.webp'); }
+.op__logo--3 { background-image: url('../img/op-mob-3.webp'); }
+.op__logo--4 { background-image: url('../img/op-mob-4.webp'); }
+.op__logo--5 { background-image: url('../img/op-mob-5.webp'); }
+.op__logo--6 { background-image: url('../img/op-mob-6.webp'); }
 
 .op__head {
   font-size: clamp(0.8rem, 3.4vw, 1.05rem);
@@ -404,15 +285,14 @@ ul { list-style: none; }
   line-height: 1.3;
 }
 
+/* The exported SVGs already draw their own teal ring, so no CSS border here. */
 .trust__icon {
   flex: 0 0 auto;
   width: clamp(38px, 3.2vw, 54px);
   aspect-ratio: 1;
-  border: 2px solid var(--trust-accent);
-  border-radius: 50%;
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 55%;
+  background-size: contain;
 }
 .trust__icon--fast { background-image: url('../img/icon-fast.svg'); }
 .trust__icon--star { background-image: url('../img/icon-star.svg'); }
@@ -566,7 +446,14 @@ ul { list-style: none; }
 
 /* From here up we follow the 1920 desktop comp's proportions. */
 @media (min-width: 768px) {
-  .hero        { padding: 2.6vw 24px 2vw; }
+  .hero__bg    { background-image: url('../img/hero-bg.webp'); }
+  .card        { background-image: url('../img/card-base.webp'); }
+
+  /* The comp's hero is 1920×1080, and the background art is composed for exactly
+     that box. Holding 16:9 keeps `cover` from cropping and zooming the artwork —
+     without it the clover and the pharaoh sit noticeably larger than designed.
+     Top padding is the comp's 144px expressed as 7.5vw. */
+  .hero        { min-height: min(56.25vw, 1080px); padding: 7.5vw 24px 2vw; }
   .hero__title { font-size: clamp(2.4rem, 5.2vw, 6.25rem); }
   .hero__hint  { font-size: clamp(0.9rem, 1.42vw, 1.7rem); }
   .auto        { font-size: clamp(0.8rem, 0.94vw, 1.125rem); }
@@ -574,6 +461,15 @@ ul { list-style: none; }
 
   .warn__title { font-size: clamp(1.3rem, 1.85vw, 2rem); }
   .ops         { grid-template-columns: repeat(3, 1fr); }
+
+  .op__logo    { aspect-ratio: 645 / 300; }
+  .op__logo--1 { background-image: url('../img/op-1.webp'); }
+  .op__logo--2 { background-image: url('../img/op-2.webp'); }
+  .op__logo--3 { background-image: url('../img/op-3.webp'); }
+  .op__logo--4 { background-image: url('../img/op-4.webp'); }
+  .op__logo--5 { background-image: url('../img/op-5.webp'); }
+  .op__logo--6 { background-image: url('../img/op-6.webp'); }
+
   .op__head    { font-size: clamp(0.9rem, 1vw, 1.05rem); }
   .op__body    { font-size: clamp(0.75rem, 0.83vw, 0.9rem); }
 
