@@ -25,9 +25,6 @@ window.LOCALES = {
     'ops.5.lead' : 'Zic că plătesc,',
     'ops.5.body' : 'Mii de clienți nu au primit banii câștigați!',
 
-    'trust.0'    : 'Plați Instante',
-    'trust.1'    : 'Experiență de 5 stele',
-    'trust.2'    : 'Unica platformă online de jocuri slot din Moldova',
 
     'popup.heading'  : 'Felicitări! Ai câștigat',
     'popup.amount'   : '100',
@@ -61,9 +58,6 @@ window.LOCALES = {
     'ops.5.lead' : 'Говорят, что выплачивают,',
     'ops.5.body' : 'Тысячи клиентов так и не получили свои выигранные деньги!',
 
-    'trust.0'    : 'Мгновенные выплаты',
-    'trust.1'    : 'Опыт на 5 звёзд',
-    'trust.2'    : 'Единственная онлайн-платформа слотов в Молдове',
 
     'popup.heading'  : 'Поздравляем, вы выиграли',
     'popup.amount'   : '100',
