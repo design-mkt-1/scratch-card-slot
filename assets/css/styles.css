@@ -274,10 +274,10 @@ ul { list-style: none; }
 
 /* Each logo carries its own brand background and rounded corners, so no
    background-color here — it would fill the transparent corners.
-   The two exports are cut at different ratios: 300×122 for mobile,
-   645×300 for desktop, so the aspect follows the breakpoint. */
+   The two exports are cut at different ratios: 225×92 for mobile,
+   484×225 for desktop, so the aspect follows the breakpoint. */
 .op__logo {
-  aspect-ratio: 300 / 122;
+  aspect-ratio: 225 / 92;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -473,7 +473,7 @@ ul { list-style: none; }
   .warn__title { font-size: clamp(1.3rem, 1.85vw, 2rem); }
   .ops         { grid-template-columns: repeat(3, 1fr); gap: clamp(12px, 1.4vw, 26px); }
 
-  .op__logo    { aspect-ratio: 645 / 300; margin-bottom: clamp(8px, 0.8vw, 14px); }
+  .op__logo    { aspect-ratio: 484 / 225; margin-bottom: clamp(8px, 0.8vw, 14px); }
   .op__logo--1 { background-image: url('../img/op-1.webp'); }
   .op__logo--2 { background-image: url('../img/op-2.webp'); }
   .op__logo--3 { background-image: url('../img/op-3.webp'); }
