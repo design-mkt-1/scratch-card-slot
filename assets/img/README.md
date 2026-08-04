@@ -42,31 +42,29 @@ Square, transparent background. Roughly 342×342 (2× the 171px they render at).
 
 ### Operator logos
 
-In the order they appear on the page, left to right, top row then bottom row. Export at
-the card's aspect ratio (16:9) including each brand's background colour.
+In the order they appear on the page, left to right, top row then bottom row.
+Export at the card's aspect ratio including each brand's background.
 
-| Filename | Brand in the comp |
-| --- | --- |
-| `op-1.png` | ybets (pink) |
-| `op-2.png` | AI Casino (black) |
-| `op-3.png` | Boostake (dark blue) |
-| `op-4.png` | Winzbee (purple) |
-| `op-5.png` | Jack (black/red) |
-| `op-6.png` | bets10 (white) |
+Two sizes, as before — desktop and mobile are cut at different ratios:
 
-### Icons and payment marks
+| Desktop (645×300) | Mobile (300×122) | Brand |
+| --- | --- | --- |
+| `cas-1.png` | `cas-mob-1.png` | 1XBET |
+| `cas-2.png` | `cas-mob-2.png` | 22BET |
+| `cas-3.png` | `cas-mob-3.png` | GGBET |
+| `cas-4.png` | `cas-mob-4.png` | bet365 |
+| `cas-5.png` | `cas-mob-5.png` | ICE Casino |
+| `cas-6.png` | `cas-mob-6.png` | VERDE Casino |
 
-SVG preferred — they scale cleanly and stay crisp on retina.
+Drop them in `assets/img/cas-images/` exactly as before — I convert them to
+`op-N.webp` / `op-mob-N.webp` and delete the sources.
 
-| Filename | What |
-| --- | --- |
-| `icon-refresh.svg` | The circular arrow next to "RĂZUIEȘTE AUTOMAT" |
-| `icon-fast.svg` | Trust bar — stopwatch ("Plați Instante") |
-| `icon-star.svg` | Trust bar — star ("Experiență de 5 stele") |
-| `icon-only.svg` | Trust bar — platform ("Unica platformă online…") |
-| `pay-mastercard.svg` | Mastercard |
-| `pay-paynet.svg` | Paynet |
-| `pay-mia.svg` | MIA |
+### Icons
+
+The auto-scratch arrow is inlined as a data URI in `styles.css`, so nothing to supply.
+
+The trust bar and payment marks were removed from the page, and their SVGs with them.
+If they ever come back, they are recoverable from git history.
 
 ### Fonts (optional)
 
