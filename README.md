@@ -5,6 +5,19 @@ no dependencies, no Node required**.
 
 Design source: Figma file `W8WKIJ5gQUpMkrCUlf3ZE8` ("Slot").
 
+## Picking this up / auditing it
+
+Read **`HANDOFF.md`** first. It covers the deployment quirk (pushing to `main`
+does not publish — see that file), the environment constraints, the bugs already
+fixed that should not be reintroduced, the deliberate departures from the Figma
+comp, and the open items.
+
+Verify any change with:
+
+```bash
+cd tools/verify && npm install && node verify.js
+```
+
 ## Run locally
 
 Any static file server works. For example:
@@ -30,14 +43,20 @@ assets/img/*
 
 ### GitHub Pages preview
 
-`.github/workflows/pages.yml` publishes the repository root on every push to `main`.
+Live at https://design-mkt-1.github.io/scratch-card-slot/
 
-**One-time setup:** go to **Settings → Pages** and set **Source** to **GitHub Actions**.
-This cannot be automated — creating a Pages site needs admin rights that the workflow's
-`GITHUB_TOKEN` does not have, so the first run fails with
-`Get Pages site failed` until it is switched on. After that, re-run the workflow
-(Actions → Deploy to GitHub Pages → Run workflow) and the site goes live at
-`https://design-mkt-1.github.io/scratch-card-slot/`.
+`.github/workflows/pages.yml` builds the repository root. Pages is enabled and the
+default branch is `main`, but **pushing to `main` does not currently publish** — the
+`github-pages` environment still restricts deploys to
+`claude/landing-page-scratch-card-fxk0ko`, so a deploy has to be run by hand:
+
+```
+Actions → Deploy to GitHub Pages → Run workflow → branch: claude/landing-page-scratch-card-fxk0ko
+```
+
+To make it automatic: **Settings → Environments → `github-pages` → Deployment
+branches and tags** → allow `main` (or "No restriction"). Full explanation in
+`HANDOFF.md`.
 
 ## Languages
 
@@ -81,11 +100,14 @@ phone download both.
 | `card-base.webp` / `card-base-mobile.webp` | Revealed card — frame, cream face, grid lines and the three `100 LEI` symbols, all one image |
 | `card-cover.webp` / `card-cover-mobile.webp` | The gold "?" panel the canvas paints and the pointer erases |
 | `card-empty.webp` | Frame with an empty face. Unused — kept as a spare |
-| `op-1.webp` … `op-6.webp` | Operator logos, desktop (645×300) |
-| `op-mob-1.webp` … `op-mob-6.webp` | Operator logos, mobile (300×122) |
-| `icon-fast.svg`, `icon-star.svg`, `icon-only.svg` | Trust bar icons — each draws its own teal ring |
-| `pay-mastercard.svg`, `pay-paynet.svg`, `pay-mia.svg` | Payment marks |
+| `clover.webp` | Clover, layered over the mobile background only — the desktop background bakes it in |
+| `symbol-a.webp` | Gold "A" flourish over the card. Exported as the *rotated* bounding box, so its 14.73° tilt is baked in — do not rotate it again in CSS |
+| `op-1.webp` … `op-6.webp` | Operator logos, desktop (484×225) |
+| `op-mob-1.webp` … `op-mob-6.webp` | Operator logos, mobile (237×92) |
 | `sym-*.webp` | Individual prize symbols. Unused — the card art already contains them; kept in case the grid ever needs to be built from parts |
+
+Operator order: 1XBET, 7777, GGBET, bet365, ICE Casino, VERDE Casino. They are
+referenced positionally, so replacing a brand is a file swap with no code change.
 
 The auto-scratch refresh icon is inlined as a data URI in `styles.css`, since it was not
 in the export set.
@@ -93,13 +115,6 @@ in the export set.
 **Cover and base must stay aligned.** Both include the same frame, so erasing the cover
 over the frame reveals an identical frame underneath and the seam is invisible. If either
 is re-exported, re-export both at the same crop.
-
-### Still to come
-
-The gold "A" flourish that sits over the hero is its own Figma layer and is not part of
-the background export, so it is currently missing on both breakpoints. The mobile
-background also excludes the clover, which the desktop one bakes in. Drop those in and
-tell me and I will layer them over `.hero__bg`.
 
 ### Re-converting
 

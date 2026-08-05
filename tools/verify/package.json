@@ -1,0 +1,7 @@
+{
+  "name": "scratch-card-verify",
+  "private": true,
+  "description": "Dev-only verification harness. Not part of the site.",
+  "scripts": { "verify": "node verify.js" },
+  "devDependencies": { "playwright": "^1.40.0" }
+}
