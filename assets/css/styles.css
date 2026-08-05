@@ -274,10 +274,10 @@ ul { list-style: none; }
 
 /* Each logo carries its own brand background and rounded corners, so no
    background-color here — it would fill the transparent corners.
-   The two exports are cut at different ratios: 225×92 for mobile,
+   The two exports are cut at different ratios: 237×92 for mobile,
    484×225 for desktop, so the aspect follows the breakpoint. */
 .op__logo {
-  aspect-ratio: 225 / 92;
+  aspect-ratio: 237 / 92;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;

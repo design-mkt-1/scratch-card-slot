@@ -47,7 +47,7 @@ Export at the card's aspect ratio including each brand's background.
 
 Two sizes, as before — desktop and mobile are cut at different ratios:
 
-| Desktop (484×225) | Mobile (225×92) | Brand |
+| Desktop (484×225) | Mobile (237×92) | Brand |
 | --- | --- | --- |
 | `cas-1.png` | `cas-mob-1.png` | 1XBET |
 | `cas-2.png` | `cas-mob-2.png` | 7777 |
